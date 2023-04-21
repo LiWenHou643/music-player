@@ -1,0 +1,96 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size:  62.5%;
+    line-height: 1.6rem;
+    box-sizing: border-box;
+}
+body > div {
+    max-width: 414px;
+}
+#player {
+    margin: 0 auto;
+    position: relative;
+}
+#player .pause{
+    display: none;
+}
+#player.playing .pause{
+    display: inline-block;
+}
+#player.playing .play{
+    display: none;
+}
+#dashboard {
+    font-size: 2rem;
+    margin-top: 10px auto 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: aliceblue;
+    z-index: 1;
+}
+.header {
+    text-align: center;
+}
+.header h2 {
+    margin: 20px;
+}
+.control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.control > .btn {
+    font-size: 3rem;
+    margin: 20px;
+}
+#progress {
+    margin: 0 0 20px;
+}
+#playlist {
+    margin-top: 400px;
+}
+.song {
+    display: flex;
+    margin: 10px 0;
+}
+.song .thumb {
+    width: 60px;
+    height: 60px;
+    background-size: cover;
+    border-radius: 50%;
+    margin: 0 20px
+}
+.song .body {
+    flex : 1;
+    padding-top: 10px;
+    font-size: 1.6rem;
+}
+.song .body > * {
+    margin: 5px;
+}
+.song .option {
+    font-size: 3rem;
+    height: 50px;
+    width: 50px;
+    margin-right: 10px;
+    padding-top: 16px;
+    text-align: center;
+    
+}
+.cd {
+    display: flex;
+    margin: auto;
+    width: 200px;
+}
+.cd .cd-thumb {
+    width: 100%;
+    padding-top: 100%;
+    background-size: cover;
+    border-radius: 50%;
+    margin: auto;
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+    <div id="player">
+        <div id="dashboard">
+            <div class="header">
+                Now playing
+                <h2></h2>
+            </div>
+            <div class="cd">
+                <div class="cd-thumb"></div>
+            </div>
+            <div class="control">
+                <div class="btn repeat">
+                    <ion-icon name="refresh-outline"></ion-icon>
+                </div>
+                <div class="btn previous">
+                    <ion-icon name="play-skip-back-circle-outline"></ion-icon>  
+                </div>
+                <div class="btn play">
+                    <ion-icon name="play-outline"></ion-icon>
+                </div>
+                <div class="btn pause">
+                    <ion-icon name="pause-circle-outline"></ion-icon>
+                </div>
+                <div class="btn next">
+                    <ion-icon name="play-skip-forward-circle-outline"></ion-icon>
+                </div>
+                <div class="btn random">
+                    <ion-icon name="repeat-outline"></ion-icon>
+                </div>
+            </div>
+            <input id="progress" type="range" value="0" step="1" min="0" max="100">
+            <audio id="audio" src=""></audio>
+        </div>
+        <div id="playlist">
+            
+        </div>
+    </div>
+
+    <script>
+        var $ = document.querySelector.bind(document)
+        var $$ = document.querySelectorAll.bind(document)
+        const cd = $('.cd')
+        // render songs
+        const app = {
+            currentIndex: 0,
+            songs : [
+                {
+                    name : 'Do toc 2',
+                    singer: 'Do toc',
+                    path: '../assets/music/song1.mp3',
+                    img: '../assets/img/song1.jpg'
+                },
+                {
+                    name : 'BreakFast',
+                    singer: 'G Ducky',
+                    path: '../assets/music/song2.mp3',
+                    img: '../assets/img/song2.jpg'
+                },
+                {
+                    name : 'De vuong',
+                    singer: 'Dinh Dung',
+                    path: '../assets/music/song3.mp3',
+                    img: '../assets/img/song3.jpg'
+                },
+                {
+                    name : 'Qua phu tuong',
+                    singer: 'Dung Hoang Pham',
+                    path: '../assets/music/song4.mp3',
+                    img: '../assets/img/song4.jpg'
+                },
+                {
+                    name : 'Tuong quan',
+                    singer: 'Nhat Phong',
+                    path: '../assets/music/song5.mp3',
+                    img: '../assets/img/song5.jpg'
+                },
+                {
+                    name : 'Vi than goi gio',
+                    singer: 'mons',
+                    path: '../assets/music/song6.mp3',
+                    img: '../assets/img/song6.jpg'
+                },
+                {
+                    name : 'Blue Tequila',
+                    singer: 'Tao',
+                    path: '../assets/music/song7.mp3',
+                    img: '../assets/img/song7.jpg'
+                },
+                {
+                    name : 'Con gai ruou',
+                    singer: 'B ray',
+                    path: '../assets/music/song8.mp3',
+                    img: '../assets/img/song8.jpg'
+                },
+                {
+                    name : 'Cua',
+                    singer: 'Hieu thu 2',
+                    path: '../assets/music/song9.mp3',
+                    img: '../assets/img/song9.jpg'
+                },
+                {
+                    name : 'Do for love',
+                    singer: 'Amee-Bray',
+                    path: '../assets/music/song10.mp3',
+                    img: '../assets/img/song10.jpg'
+                },
+                {
+                    name : 'Exs Hate Me',
+                    singer: 'Amee-Bray',
+                    path: '../assets/music/song11.mp3',
+                    img: '../assets/img/song11.jpg'
+                },
+            ],
+            render: function(){
+                
+                const html = this.songs.map(song => {
+                    return `
+                        <div class="song">
+                            <div class="thumb" style="background-image: url('${song.img}')"></div>
+                            <div class="body">
+                                <h3 class="title">${song.name}</h3>
+                                <p class="author">${song.singer}</p>
+                            </div>
+                            <div class="option">
+                                <ion-icon name="ellipsis-vertical-outline"></ion-icon>
+                            </div>
+                        </div>
+                    `
+                })
+                $('#playlist').innerHTML = html.join('')
+            },
+            handleEvent: function(){
+                const cdWidth = cd.offsetWidth
+                // console.log(cdWidth)
+                document.onscroll = function(){
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop
+                    const newCdWidth = cdWidth - scrollTop
+                    cd.style.width = newCdWidth > 0 ? newCdWidth + 'px' : 0
+                    cd.style.opacity = newCdWidth / cdWidth
+                }
+
+            },
+            defineProperties: function(){
+                Object.defineProperty(this, 'currentSong', {
+                    get: function(){
+                        return this.songs[this.currentIndex]
+                    }
+                })
+            },
+            loadCurrentSong: function(){
+                const head = $('.header h2')
+                const thumb = $('.cd .cd-thumb')
+                const audio = $('#audio')
+                head.textContent = this.currentSong.name
+                thumb.style.backgroundImage = `url(${this.currentSong.img})`
+                audio.src = this.currentSong.path
+                console.log(head, thumb, audio)
+            },
+            start: function(){
+                this.defineProperties()
+                this.render()
+                this.handleEvent()
+                this.loadCurrentSong()
+            }
+        }
+        app.start()
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
