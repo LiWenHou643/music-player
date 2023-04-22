@@ -47,17 +47,21 @@
         var $$ = document.querySelectorAll.bind(document)
         const cd = $('.cd')
         const head = $('.header h2')
-        const thumb = $('.cd .cd-thumb')
+        const cdThumb = $('.cd .cd-thumb')
         const audio = $('#audio')
         const playBtn = $('.play-toggle')
         const player = $('#player')
+        const progress = $('#progress')
         const nextBtn = $('.next')
         const prevBtn = $('.prev')
-        const progress = $('#progress')
+        const randomBtn = $('.random')
+        const repeatBtn = $('.repeat')
         // render songs
         const app = {
             currentIndex: 0,
             isPlaying: false,
+            isRandom: false,
+            isRepeat: false,
             songs : [
                 {
                     name : 'Do toc 2',
@@ -145,7 +149,7 @@
             },
             handleEvent: function(){
                 const _this = this
-                const thumbAni = thumb.animate([
+                const thumbAni = cdThumb.animate([
                     {transform: 'rotate(360deg)'}
                 ],{
                     duration:10000,
@@ -170,10 +174,13 @@
                     audio.onplay = function(){
                         player.classList.add('playing')
                         _this.isPlaying = true
+                        thumbAni.play()
+
                     }
                     audio.onpause = function(){
                         player.classList.remove('playing')
                         _this.isPlaying = false
+                        thumbAni.pause()
                     }
                 }
                 //update time slide
@@ -181,6 +188,16 @@
                     if (audio.duration){
                         const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
                         progress.value = progressPercent
+                        if (progressPercent == 100 && _this.isRepeat){
+                            audio.play()
+                        }
+                        else if (progressPercent == 100 && !_this.isRandom){
+                            _this.nextSong()
+                            audio.play()
+                        } else if (progressPercent == 100 && _this.isRandom) {
+                            _this.randomSong()
+                            audio.play()
+                        }
                     }
                 }
                 //when progress change
@@ -190,8 +207,29 @@
                 }
                 //next/previous song
                 nextBtn.onclick = function(){
-                    
-                }    
+                    _this.nextSong()
+                    audio.play()
+                    player.classList.add('playing')
+                    _this.isPlaying = true
+                    thumbAni.play()
+                } 
+                prevBtn.onclick = function(){
+                    _this.prevSong()
+                    audio.play()
+                    player.classList.add('playing')
+                    _this.isPlaying = true
+                    thumbAni.play()
+                }  
+                //random song
+                randomBtn.onclick = function(){
+                    _this.isRandom = !_this.isRandom
+                    randomBtn.classList.toggle('active', _this.isRandom)
+                }
+                //repeat song
+                repeatBtn.onclick = function(){
+                    _this.isRepeat = !_this.isRepeat
+                    repeatBtn.classList.toggle('active', _this.isRepeat)
+                } 
             },
             defineProperties: function(){
                 Object.defineProperty(this, 'currentSong', {
@@ -202,8 +240,22 @@
             },
             loadCurrentSong: function(){
                 head.textContent = this.currentSong.name
-                thumb.style.backgroundImage = `url(${this.currentSong.img})`
+                cdThumb.style.backgroundImage = `url(${this.currentSong.img})`
                 audio.src = this.currentSong.path
+            },
+            nextSong: function(){
+                this.currentIndex++
+                if (this.currentIndex >= this.songs.length) this.currentIndex=0
+                this.loadCurrentSong()
+            },
+            prevSong: function(){
+                this.currentIndex--
+                if (this.currentIndex < 0) this.currentIndex=this.songs.length-1
+                this.loadCurrentSong()
+            },
+            randomSong: function(){
+                this.currentIndex = Math.floor(Math.random() * (this.songs.length-1));
+                this.loadCurrentSong()
             },
             start: function(){
                 this.defineProperties()
