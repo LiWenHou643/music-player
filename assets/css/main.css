@@ -69,10 +69,10 @@ html {
 }
 .song {
     display: flex;
-    padding: 10px 0;
+    padding: 12px 0;
 }
 .song.active {
-    background-color: rgb(8, 54, 139);
+    background-color: rgb(72, 23, 209);
 }
 .song .thumb {
     width: 60px;
@@ -83,11 +83,18 @@ html {
 }
 .song .body {
     flex : 1;
-    padding-top: 10px;
-    font-size: 1.6rem;
+    padding-top: 4px;
 }
 .song .body > * {
-    margin: 5px;
+    margin: 8px;
+}
+.song .body > :nth-child(1){
+    font-size: 2rem;
+    
+}
+.song .body > :nth-child(2){
+    font-size: 1.6rem;
+    
 }
 .song .option {
     font-size: 3rem;
@@ -105,12 +112,10 @@ html {
     display: flex;
     margin: auto;
     width: 200px;
-    height: 200px;
 }
 .cd .cd-thumb {
-    /* padding-top: 100%; */
+    padding-top: 100%;
     width: 100%;
-    height: 100%;
     background-size: cover;
     border-radius: 50%;
     margin: auto;
